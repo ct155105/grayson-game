@@ -18,6 +18,7 @@ class Level {
       "=": Lava,
       "|": Lava,
       v: Lava,
+      "M": Monster,
     };
 
     this.rows = rows.map((row, y) => {
@@ -30,7 +31,5 @@ class Level {
     });
   }
 }
-
-let test = new Level(`..........\n........`);
 
 export default Level;

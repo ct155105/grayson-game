@@ -17,4 +17,20 @@ class Coin {
 
 Coin.prototype.size = new Vec(0.6, 0.6);
 
+Coin.prototype.collide = function(state) {
+  let filtered = state.actors.filter(a => a != this);
+  let status = state.status;
+  if (!filtered.some(a => a.type == "coin")) status = "won";
+  return new State(state.level, filtered, status);
+};
+
+const wobbleSpeed = 8, wobbleDist = 0.07;
+
+Coin.prototype.update = function(time) {
+  let wobble = this.wobble + time * wobbleSpeed;
+  let wobblePos = Math.sin(wobble) * wobbleDist;
+  return new Coin(this.basePos.plus(new Vec(0, wobblePos)),
+                  this.basePos, wobble);
+};
+
 export default Coin;
