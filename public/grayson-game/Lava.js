@@ -37,4 +37,3 @@ Lava.prototype.collide = function(state) {
   return new State(state.level, state.actors, "lost");
 };
 
-export default Lava

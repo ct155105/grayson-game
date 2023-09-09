@@ -1,5 +1,3 @@
-import Vec from "./Vec";
-
 class Coin {
   constructor(pos, basePos, wobble) {
     this.pos = pos;
@@ -35,4 +33,3 @@ Coin.prototype.update = function(time) {
                   this.basePos, wobble);
 };
 
-export default Coin

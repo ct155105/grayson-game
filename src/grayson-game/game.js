@@ -96,3 +96,5 @@ GAME_LEVELS = [simpleLevelPlan];
 // wait 500ms before starting the game
 runGame(GAME_LEVELS, CanvasDisplay);
 // let simpleLevel = new Level(simpleLevelPlan);
+
+export default CanvasDisplay;
