@@ -1,3 +1,6 @@
+import Vec from "./Vec";
+import State from "./State";
+
 class Lava {
   constructor(pos, speed, reset) {
     this.pos = pos;

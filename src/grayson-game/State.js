@@ -44,4 +44,4 @@ function overlap(actor1, actor2) {
 }
 
 
-// export default State;
+export default State;

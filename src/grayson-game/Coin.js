@@ -1,4 +1,5 @@
 import Vec from "./Vec";
+import State from "./State";
 
 class Coin {
   constructor(pos, basePos, wobble) {

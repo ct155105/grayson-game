@@ -2,9 +2,16 @@ import React, { useRef, useEffect } from "react";
 import Coin from "./Coin";
 import Lava from "./Lava";
 import Player from "./Player";
+import Monster from "./Monster";
+import Level from "./Level";
+import State from "./State";
+import CanvasDisplay from "./CanvasDisplay";
 
 function CanvasGame() {
   const canvasRef = useRef(null);
+  const img1 = useRef(null);
+  const img2 = useRef(null);
+  const img3 = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -65,7 +72,15 @@ function CanvasGame() {
     }
 
     function runLevel(level, Display) {
-      let display = new Display(document.body, level);
+      let display = new Display(
+        document.body,
+        level,
+        canvas,
+        img1.current,
+        img2.current,
+        img3.current,
+        scale
+      );
       let state = State.start(level);
       let ending = 1;
       return new Promise((resolve) => {
@@ -94,7 +109,7 @@ function CanvasGame() {
       alert("You've won!");
     }
 
-    GAME_LEVELS = [simpleLevelPlan];
+    const GAME_LEVELS = [simpleLevelPlan];
 
     // function flipHorizontally(context, around) {
     //   context.translate(around, 0);
@@ -106,7 +121,12 @@ function CanvasGame() {
     runGame(GAME_LEVELS, CanvasDisplay);
   }, []);
 
-  return <canvas ref={canvasRef} width={800} height={600} />;
+  return (
+    <div>
+      <img ref={img1} /> <img ref={img2} /> <img ref={img3} />
+      <canvas ref={canvasRef} width={800} height={600} />
+    </div>
+  );
 }
 
 export default CanvasGame;

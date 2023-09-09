@@ -1,4 +1,9 @@
-// import Vec from "./Vec.js";
+import Player from "./Player";
+import Coin from "./Coin";
+import Lava from "./Lava";
+import Monster from "./Monster";
+import Vec from "./Vec";
+
 
 class Level {
   constructor(plan) {
@@ -48,4 +53,4 @@ Level.prototype.touches = function (pos, size, type) {
   return false;
 };
 
-// export default Level;
+export default Level;

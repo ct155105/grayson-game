@@ -1,3 +1,6 @@
+import Vec from "./Vec.js";
+import State from "./State.js";
+
 class Monster {
     constructor(pos) {
       this.pos = pos;
@@ -28,3 +31,5 @@ class Monster {
   }
   
   Monster.prototype.size = new Vec(1.2, 2);
+
+  export default Monster

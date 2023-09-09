@@ -1,23 +1,32 @@
 class CanvasDisplay {
-  constructor(parent, level) {
-    this.canvas = document.createElement("canvas");
-    this.canvas.width = Math.min(1200, level.width * scale);
-    this.canvas.height = Math.min(450, level.height * scale);
-    parent.appendChild(this.canvas);
+  constructor(parent, level, canvas, img1, img2, img3, scale) {
+    this.canvas = canvas;
+    this.scale = scale;
+    this.canvas.width = Math.min(1200, level.width * this.scale);
+    this.canvas.height = Math.min(450, level.height * this.scale);
+    // parent.appendChild(this.canvas);
     this.cx = this.canvas.getContext("2d");
 
     this.flipPlayer = false;
 
+    this.otherSprites = img1;
+    this.otherSprites.src = "sprites_big.png";
+
+    this.zurgSprites = img2;
+    this.zurgSprites.src = "output_zurg.jpg";
+
+    this.playerSprites = img3;
+
     this.viewport = {
       left: 0,
       top: 0,
-      width: this.canvas.width / scale,
-      height: this.canvas.height / scale,
+      width: this.canvas.width / this.scale,
+      height: this.canvas.height / this.scale,
     };
   }
 
   clear() {
-    this.canvas.remove();
+    // this.canvas.remove();
   }
 }
 
@@ -63,14 +72,14 @@ CanvasDisplay.prototype.clearDisplay = function (status) {
   this.cx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 };
 
-let otherSprites = document.createElement("img");
-otherSprites.src = "sprites_big.png";
+// let otherSprites = new Image();
+// otherSprites.src = "sprites_big.png";
 
-let zurgSprites = document.createElement("img");
-zurgSprites.src = "output_zurg.jpg";
+// let zurgSprites = new Image();
+// zurgSprites.src = "output_zurg.jpg";
 
-CanvasDisplay.prototype.drawBackground = function(level) {
-  let {left, top, width, height} = this.viewport;
+CanvasDisplay.prototype.drawBackground = function (level) {
+  let { left, top, width, height } = this.viewport;
   let xStart = Math.floor(left);
   let xEnd = Math.ceil(left + width);
   let yStart = Math.floor(top);
@@ -80,23 +89,30 @@ CanvasDisplay.prototype.drawBackground = function(level) {
     for (let x = xStart; x < xEnd; x++) {
       let tile = level.rows[y][x];
       if (tile == "empty") continue;
-      let screenX = (x - left) * scale;
-      let screenY = (y - top) * scale;
-      let tileX = tile == "lava" ? scale : 0;
-      this.cx.drawImage(otherSprites,
-                        tileX,         0, scale, scale,
-                        screenX, screenY, scale, scale);
+      let screenX = (x - left) * this.scale;
+      let screenY = (y - top) * this.scale;
+      let tileX = tile == "lava" ? this.scale : 0;
+      this.cx.drawImage(
+        this.otherSprites,
+        tileX,
+        0,
+        this.scale,
+        this.scale,
+        screenX,
+        screenY,
+        this.scale,
+        this.scale
+      );
     }
   }
 };
 
-let playerSprites = document.createElement("img");
+// let playerSprites = document.createElement("img");
 // playerSprites.src = "player_big.png";
 // playerSprites.src = "output_image.jpg";
 const playerXOverlap = 4;
 
-CanvasDisplay.prototype.drawPlayer = function(player, x, y,
-                                              width, height){
+CanvasDisplay.prototype.drawPlayer = function (player, x, y, width, height) {
   width += playerXOverlap * 2;
   x -= playerXOverlap;
   if (player.speed.x != 0) {
@@ -105,17 +121,17 @@ CanvasDisplay.prototype.drawPlayer = function(player, x, y,
 
   let tile = 0;
 
-  let src = "output_image.jpg"
-  if (player.speed.x != 0){
+  let src = "output_image.jpg";
+  if (player.speed.x != 0) {
     let imageState = Math.floor(Date.now() / 120) % 2;
-    if (imageState == 0){
-      src = "output_image.jpg"
+    if (imageState == 0) {
+      src = "output_image.jpg";
     } else {
-      src = "output_image_walking.jpg"
+      src = "output_image_walking.jpg";
     }
   }
-  playerSprites.src = src;
-  
+  this.playerSprites.src = src;
+
   // Original walking code below
   // This code is how the player looks like he is moving
   // if (player.speed.y != 0) {
@@ -129,34 +145,51 @@ CanvasDisplay.prototype.drawPlayer = function(player, x, y,
     flipHorizontally(this.cx, x + width / 2);
   }
   let tileX = tile * width;
-  this.cx.drawImage(playerSprites, tileX, 0, width, height,
-                                   x,     y, width, height);
+  this.cx.drawImage(
+    this.playerSprites,
+    tileX,
+    0,
+    width,
+    height,
+    x,
+    y,
+    width,
+    height
+  );
   this.cx.restore();
 };
 
-CanvasDisplay.prototype.drawActors = function(actors) {
-    for (let actor of actors) {
-      let width = actor.size.x * scale;
-      let height = actor.size.y * scale;
-      let x = (actor.pos.x - this.viewport.left) * scale;
-      let y = (actor.pos.y - this.viewport.top) * scale;
-      if (actor.type == "player") {
-        this.drawPlayer(actor, x, y, width, height);
-      } else if (actor.type == "monster") {
-        this.cx.drawImage(zurgSprites,x,y,width,height)
-      } else {
-        let tileX = (actor.type == "coin" ? 2 : 1) * scale;
-        this.cx.drawImage(otherSprites,
-                          tileX, 0, width, height,
-                          x,     y, width, height);
-      }
+CanvasDisplay.prototype.drawActors = function (actors) {
+  for (let actor of actors) {
+    let width = actor.size.x * this.scale;
+    let height = actor.size.y * this.scale;
+    let x = (actor.pos.x - this.viewport.left) * this.scale;
+    let y = (actor.pos.y - this.viewport.top) * this.scale;
+    if (actor.type == "player") {
+      this.drawPlayer(actor, x, y, width, height);
+    } else if (actor.type == "monster") {
+      this.cx.drawImage(this.zurgSprites, x, y, width, height);
+    } else {
+      let tileX = (actor.type == "coin" ? 2 : 1) * this.scale;
+      this.cx.drawImage(
+        this.otherSprites,
+        tileX,
+        0,
+        width,
+        height,
+        x,
+        y,
+        width,
+        height
+      );
     }
-  };
-
-  function flipHorizontally(context, around) {
-    context.translate(around, 0);
-    context.scale(-1, 1);
-    context.translate(-around, 0);
   }
+};
 
-export default CanvasDisplay
+function flipHorizontally(context, around) {
+  context.translate(around, 0);
+  context.scale(-1, 1);
+  context.translate(-around, 0);
+}
+
+export default CanvasDisplay;
