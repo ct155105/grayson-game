@@ -29,6 +29,20 @@ function CanvasGame() {
 ......#############.................
 ....................................`;
 
+let simpleLevelPlan2 = `
+..#.....................#....#......
+..#.....................#....#......
+..#............o........#....#......
+..#...=.................#....#......
+..#.....###.............#....#......
+..#.....................v....v...#..
+..#..............=...............#..
+..#.........oMo..................#..
+..#.@.M....#####.................#..
+..########+++++++++#..o...o.M..o.#..
+......#++++++++++++###############..
+......#############.................`;
+
     const levelChars = {
       ".": "empty",
       "#": "wall",
@@ -109,7 +123,7 @@ function CanvasGame() {
       alert("You've won!");
     }
 
-    const GAME_LEVELS = [simpleLevelPlan];
+    const GAME_LEVELS = [simpleLevelPlan, simpleLevelPlan2];
 
     // function flipHorizontally(context, around) {
     //   context.translate(around, 0);
@@ -117,14 +131,13 @@ function CanvasGame() {
     //   context.translate(-around, 0);
     // }
 
-    // wait 500ms before starting the game
     runGame(GAME_LEVELS, CanvasDisplay);
   }, []);
 
   return (
     <div>
       <img ref={img1} /> <img ref={img2} /> <img ref={img3} />
-      <canvas ref={canvasRef} width={800} height={600} />
+      <canvas ref={canvasRef} width={1200} height={450} />
     </div>
   );
 }
